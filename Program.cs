@@ -9,14 +9,14 @@ public class Program
 {
     public static void Main(string[] args)
     {
-        if(!TryParse(args, out var versionUpArgs))
+        if (!TryParse(args, out var versionUpArgs))
         {
             return;
         }
 
         var files = Directory.EnumerateFiles(versionUpArgs.Path, "*.*", SearchOption.AllDirectories);
         var extensions = new HashSet<string>(versionUpArgs.Extensions, StringComparer.OrdinalIgnoreCase);
-
+        int count = 0;
         foreach (var file in files)
         {
             var ext = Path.GetExtension(file);
@@ -30,8 +30,10 @@ public class Program
                 Console.WriteLine($"Replacing version in {file}");
                 var newText = text.Replace(versionUpArgs.OldVersion, versionUpArgs.NewVersion);
                 File.WriteAllText(file, newText);
+                count++;
             }
         }
+        Console.WriteLine($"Finished ({versionUpArgs.OldVersion} -> {versionUpArgs.NewVersion}), files updated: {count}");
     }
 
     private static bool TryParse(string[] args, out VersionUpAgrs res)
