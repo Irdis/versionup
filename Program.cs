@@ -3,7 +3,7 @@
     public string Path { get; set; }
     public string NewVersion { get; set; }
     public string OldVersion { get; set; }
-    public string[] Extensions { get; set; } = ["csproj", "props"];
+    public string[] Extensions { get; set; } = [".csproj", ".props"];
 }
 public class Program
 {
@@ -16,9 +16,11 @@ public class Program
 
         var files = Directory.EnumerateFiles(versionUpArgs.Path, "*.*", SearchOption.AllDirectories);
         var extensions = new HashSet<string>(versionUpArgs.Extensions, StringComparer.OrdinalIgnoreCase);
+
         foreach (var file in files)
         {
             var ext = Path.GetExtension(file);
+
             if (!extensions.Contains(ext))
                 continue;
 
@@ -48,7 +50,7 @@ public class Program
             else if (args[ind] == "-e" && ind < args.Length - 1)
             {
                 ind++;
-                res.Extensions = args[ind].Split(',');
+                res.Extensions = args[ind].Split(',').Select(x => "." + x).ToArray();
                 ind++;
             }
             else if (args[ind] == "-?") 
@@ -68,7 +70,17 @@ public class Program
                 }
                 res.OldVersion = args[ind++];
                 res.NewVersion = args[ind];
+                return true;
             }
+        }
+        if (string.IsNullOrEmpty(res.OldVersion) || 
+            string.IsNullOrEmpty(res.NewVersion))
+        {
+            var tw = Console.Error;
+            tw.WriteLine("Invalid argument list");
+            tw.WriteLine();
+            PrintUsage(tw);
+            return false;
         }
         return true;
     }
