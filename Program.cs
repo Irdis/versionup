@@ -1,4 +1,6 @@
-﻿public class VersionUpAgrs
+﻿namespace versionup;
+
+public class VersionUpAgrs
 {
     public string Path { get; set; }
     public string NewVersion { get; set; }
