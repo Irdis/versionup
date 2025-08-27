@@ -94,7 +94,7 @@ public class Program
         tw.WriteLine("versionup [args] <oldVersion> <newVersion>");
         tw.WriteLine("args list:");
         tw.WriteLine("    -p <folder1>:      path");
-        tw.WriteLine("    -e <ext1,ext2...>: extensions, default extensions: .csproj, .props");
+        tw.WriteLine("    -e <ext1,ext2...>: extensions, default extensions: csproj, props");
         tw.WriteLine("    -?:                show this message");
     }
 }
